@@ -2,6 +2,25 @@ import 'typeface-roboto';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Kanban from './Kanban';
+import {createStore, applyMiddleware} from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import {Provider} from 'react-redux';
 
-ReactDOM.render(<Kanban />, document.getElementById('root'));
+import TrelloApp from './TrelloApp'
+import Kanban from './Kanban';
+import sagas from './sagas'
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(TrelloApp, {
+    boardsList: [],
+    currentBoard : null
+}, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(sagas);
+
+console.log('State:', store.getState());
+
+ReactDOM.render((<Provider store={store}>
+      <Kanban />
+</Provider>), document.getElementById('root'));

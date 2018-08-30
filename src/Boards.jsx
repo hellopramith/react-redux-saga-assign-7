@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import {connect} from 'react-redux';
 
 export default class Boards extends Component {
   static propTypes = {
@@ -40,3 +41,5 @@ export default class Boards extends Component {
     );
   }
 }
+
+connect() (Boards);
