@@ -19,7 +19,11 @@ const store = createStore(TrelloApp, {
 
 sagaMiddleware.run(sagas);
 
-console.log('State:', store.getState());
+store.subscribe(() => {
+    console.log('new STATE:', store.getState());
+});
+
+console.log('STATE:', store.getState());
 
 ReactDOM.render((<Provider store={store}>
       <Kanban />

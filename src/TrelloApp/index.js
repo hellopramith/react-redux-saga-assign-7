@@ -140,6 +140,16 @@ function TrelloApp(currState, action) {
         })
       });
 
+    case 'SET_CURRENT_BOARD':
+      return Object.assign({}, {
+        currentBoard: action.payload
+      });
+    
+    case 'SET_BOARDS_LIST':
+      return Object.assign({}, {
+        boardsList: action.payload
+      })
+
     default:
       return currState;
   }
