@@ -42,23 +42,32 @@ class Board extends Component {
 
   handleCreateList(event) {
     event.preventDefault();
-    const lists = [...this.state.lists, {
+    const newList = {
       id: Math.random()*879979224,
       name: this.state.addListTitle,
       cards: []
-    }];
+    };
+
+    const lists = [...this.props.currentBoard.lists, newList];
+    this.setState({id:this.props.currentBoard.id});
+    this.setState({name:this.props.currentBoard.name});
 
     this.setState({lists, addListTitle: ''});
+    this.props.currentBoard.lists = lists;
     this.saveBoard();
   }
 
   handleListUpdate(listId, newValue) {
-    const index = this.state.lists.findIndex(list => list.id === listId);
-    const list = this.state.lists[index];
+    const index = this.props.currentBoard.lists.findIndex(list => list.id === listId);
+    const list = this.props.currentBoard.lists[index];
     const newList = Object.assign({}, list, {name: newValue});
-    const lists = [...this.state.lists.slice(0, index), newList, ...this.state.lists.slice(index+1)];
-
+    const lists = [...this.props.currentBoard.lists.slice(0, index), newList, ...this.props.currentBoard.lists.slice(index+1)];
+    
     this.setState({lists});
+    this.setState({id:this.props.currentBoard.id});
+    this.setState({name:this.props.currentBoard.name});
+
+    this.props.currentBoard.lists = lists;
     this.saveBoard();
   }
 
@@ -79,8 +88,8 @@ class Board extends Component {
   }
 
   handleCardUpdate(listId, cardId, newValue) {
-    const listIndex = this.state.lists.findIndex(list => list.id === listId);
-    const list = this.state.lists[listIndex];
+    const listIndex = this.props.currentBoard.lists.findIndex(list => list.id === listId);
+    const list = this.props.currentBoard.lists[listIndex];
     const cardIndex = list.cards.findIndex(card => card.id === cardId);
     const card = list.cards[cardIndex];
 
@@ -90,8 +99,12 @@ class Board extends Component {
     const updatedCards = [...list.cards.slice(0, cardIndex), {id: cardId, text: newValue}, ...list.cards.slice(cardIndex+1)];
     const updatedList = Object.assign({}, list, {cards: updatedCards});
 
-    const lists = [...this.state.lists.slice(0, listIndex), updatedList, ...this.state.lists.slice(listIndex+1)];
+    const lists = [...this.props.currentBoard.lists.slice(0, listIndex), updatedList, ...this.props.currentBoard.lists.slice(listIndex+1)];
     this.setState({lists});
+    this.setState({id:this.props.currentBoard.id});
+    this.setState({name:this.props.currentBoard.name});
+
+    this.props.currentBoard.lists = lists;
     this.saveBoard();
   }
 
