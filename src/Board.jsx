@@ -66,13 +66,15 @@ class Board extends Component {
     const index = this.props.currentBoard.lists.findIndex(list => list.id === listId);
     const list = this.props.currentBoard.lists[index];
     const cards = [...list.cards, {id: Math.random()*879792374, text: cardText}]
-
+    const currentBoard = {};
     const newList = Object.assign({}, list, {cards});
 
     const lists = [...this.props.currentBoard.lists.slice(0, index), newList, ...this.props.currentBoard.lists.slice(index+1)];
     this.setState({lists});
-    this.setState({id:1});
-    this.setState({name:cardText});
+    this.setState({id:this.props.currentBoard.id});
+    this.setState({name:this.props.currentBoard.name});
+
+    this.props.currentBoard.lists = lists;
     this.saveBoard();
   }
 
@@ -96,7 +98,6 @@ class Board extends Component {
   saveBoard() {
     setTimeout(() => {
       const {id, name, lists} = this.state;
-      console.log('------',id)
       axios.put(`/api/board/${id}`, {id, name, lists}).then(result => console.log('Updated State'));
     });
   }
@@ -116,7 +117,6 @@ class Board extends Component {
   render() {
     const currentBoard = this.props.currentBoard || {'lists': []};
 
-    console.log('this.props.currentBoard----', currentBoard)
     return (
       <Fragment>
         <div style={styles.flexContainer}>
