@@ -36,7 +36,7 @@ class Board extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: 'GET_CURRENT_BOARD',
-      boardId: 1
+      boardId: this.props.id
     })
   }
 
@@ -63,14 +63,16 @@ class Board extends Component {
   }
 
   handleCreateCard(listId, cardText) {
-    const index = this.state.lists.findIndex(list => list.id === listId);
-    const list = this.state.lists[index];
+    const index = this.props.currentBoard.lists.findIndex(list => list.id === listId);
+    const list = this.props.currentBoard.lists[index];
     const cards = [...list.cards, {id: Math.random()*879792374, text: cardText}]
 
     const newList = Object.assign({}, list, {cards});
 
-    const lists = [...this.state.lists.slice(0, index), newList, ...this.state.lists.slice(index+1)];
+    const lists = [...this.props.currentBoard.lists.slice(0, index), newList, ...this.props.currentBoard.lists.slice(index+1)];
     this.setState({lists});
+    this.setState({id:1});
+    this.setState({name:cardText});
     this.saveBoard();
   }
 
@@ -94,6 +96,7 @@ class Board extends Component {
   saveBoard() {
     setTimeout(() => {
       const {id, name, lists} = this.state;
+      console.log('------',id)
       axios.put(`/api/board/${id}`, {id, name, lists}).then(result => console.log('Updated State'));
     });
   }
