@@ -29,7 +29,7 @@ class Boards extends Component {
 
   render() {
     console.log('props.boardsList', this.props.boardsList);
-    const boardsList = this.props.boardList || [];
+    const boardsList = this.props.boardsList || [];
     return (
       <Grid container spacing={16}>
         {boardsList.map(board => <Grid key={board.id} item xl={2}>

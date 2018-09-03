@@ -23,8 +23,6 @@ store.subscribe(() => {
     console.log('new STATE:', store.getState());
 });
 
-console.log('STATE:', store.getState());
-
 ReactDOM.render((<Provider store={store}>
       <Kanban />
 </Provider>), document.getElementById('root'));
