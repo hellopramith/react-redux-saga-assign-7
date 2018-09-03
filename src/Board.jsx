@@ -4,6 +4,7 @@ import axios from 'axios';
 import List from './List';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {connect} from 'react-redux';
 
 const styles = {
   flexContainer: {
@@ -17,9 +18,10 @@ const styles = {
   }
 }
 
-export default class Board extends Component {
+class Board extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    currentBoard: PropTypes.object,
   };
 
   constructor(props) {
@@ -32,7 +34,10 @@ export default class Board extends Component {
   }
 
   componentDidMount() {
-    axios.get(`/api/board/${this.props.id}`).then(result => this.setState(result.data));
+    this.props.dispatch({
+      type: 'GET_CURRENT_BOARD',
+      boardId: 1
+    })
   }
 
   handleCreateList(event) {
@@ -106,10 +111,13 @@ export default class Board extends Component {
   }
 
   render() {
+    const currentBoard = this.props.currentBoard || {'lists': []};
+
+    console.log('this.props.currentBoard----', currentBoard)
     return (
       <Fragment>
         <div style={styles.flexContainer}>
-          {this.state.lists.map(list => (
+          {currentBoard.lists.map(list => (
             <List
               styles={styles.flexItem}
               key={list.id}
@@ -147,3 +155,9 @@ export default class Board extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  currentBoard: state.currentBoard
+});
+
+export default connect(mapStateToProps) (Board);

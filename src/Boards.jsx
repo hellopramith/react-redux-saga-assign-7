@@ -34,7 +34,6 @@ class Boards extends Component {
       <Grid container spacing={16}>
         {boardsList.map(board => <Grid key={board.id} item xl={2}>
           <Link to={`/boards/${board.id}`}>
-          
             <Card>
               <CardContent>
                 <Typography variant="headline" component="h4"> {board.name} </Typography>

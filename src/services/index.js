@@ -7,7 +7,7 @@ export function getAllBoards() {
 }
 
 export function getBoard(boardId) {
-    return axios.get(`api/board/${boardId}`).then(result => new Promise((resolve,reject) => {
+    return axios.get(`../api/board/${boardId}`).then(result => new Promise((resolve,reject) => {
         resolve(result.data);
     }));
 }
